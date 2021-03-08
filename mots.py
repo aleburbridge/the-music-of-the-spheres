@@ -1,102 +1,51 @@
 import tkinter as tk
 from tkinter import *
-import pygame
 from pygame import *
 from datetime import date
 import requests
 import bs4
 import re
-#fix the import * later
-
+from os import path
 
 root = Tk()
 mixer.init() 
-root.iconbitmap('D:\\alebu\\My-Programming-stuff\\mots\\icon.ico')
-root.title('The Music of the Spheres')
-
+icon_path = path.relpath('images/icon.io')
+root.iconbitmap(icon_path)
+root.title('Music of the Spheres')
+APP_ID = 'your app ID here'
 
 todays_date = date.today()
 
 # webscraping for planet distance using wolfram alpha api
 # http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE+current+distance+from+Earth%3f
 
-sun = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Sun+current+distance+from+Earth%3f')
-mercury = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Mercury+current+distance+from+Earth%3f')
-venus = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Venus+current+distance+from+Earth%3f')
-mars = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Mars+current+distance+from+Earth%3f')
-jupiter = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Jupiter+current+distance+from+Earth%3f')
-saturn = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Saturn+current+distance+from+Earth%3f')
-uranus = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Uranus+current+distance+from+Earth%3f')
-neptune = requests.get('http://api.wolframalpha.com/v1/result?appid=YOUR-APP-ID-HERE-772K4A7THW&i=Neptune+current+distance+from+Earth%3f')
+sun = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Sun+current+distance+from+Earth%3f')
+mercury = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Mercury+current+distance+from+Earth%3f')
+venus = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Venus+current+distance+from+Earth%3f')
+mars = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Mars+current+distance+from+Earth%3f')
+jupiter = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Jupiter+current+distance+from+Earth%3f')
+saturn = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Saturn+current+distance+from+Earth%3f')
+uranus = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Uranus+current+distance+from+Earth%3f')
+neptune = requests.get(f'http://api.wolframalpha.com/v1/result?appid={APP_ID}-772K4A7THW&i=Neptune+current+distance+from+Earth%3f')
 
-# assigns each distance to a variable then converts them to an int or float
-sunDistance = sun.text
-sunDistance = re.sub('[about rmcl unis]','', sunDistance)
-if '.' in sunDistance:
-    sunDistance = float(sunDistance)
-else:
-    sunDistance = int(sunDistance)
-print(type(sunDistance))
+requestsList = [sun, mercury, venus, mars, jupiter, saturn, uranus, neptune]
+requestsDict = {}
+def getDistance(planetDistance, planet):
+    planetDistance = planet.text
+    planetDistance = re.sub('[about rmcl unis]','', planetDistance)
+    if '.' in planetDistance:
+        planetDistance = float(planetDistance)
+    else:
+        planetDistance = int(planetDistance)
 
-
-mercuryDistance = mercury.text
-mercuryDistance = re.sub('[about rmcl unis]','', mercuryDistance)
-if '.' in mercuryDistance:
-    mercuryDistance = float(mercuryDistance)
-else:
-    mercuryDistance = int(mercuryDistance)
-print(type(mercuryDistance))
-
-
-venusDistance = venus.text
-venusDistance = re.sub('[about rmcl unis]','', venusDistance)
-if '.' in venusDistance:
-    venusDistance = float(venusDistance)
-else:
-    venusDistance = int(venusDistance)
-print(type(venusDistance))
-
-marsDistance = mars.text
-marsDistance = re.sub('[about rmcl unis]','', marsDistance)
-if '.' in marsDistance:
-    marsDistance = float(marsDistance)
-else:
-    marsDistance = int(marsDistance)
-print(type(marsDistance))
-
-
-jupiterDistance =jupiter.text
-jupiterDistance = re.sub('[about rmcl unis]','', jupiterDistance)
-if '.' in jupiterDistance:
-    jupiterDistance = float(jupiterDistance)
-else:
-    jupiterDistance = int(jupiterDistance)
-print(type(jupiterDistance))
-
-
-saturnDistance = saturn.text
-saturnDistance = re.sub('[about rmcl unis]','', saturnDistance)
-if '.' in saturnDistance:
-    saturnDistance = float(saturnDistance)
-else:
-    saturnDistance = int(saturnDistance)
-print(type(saturnDistance))
-
-uranusDistance = uranus.text
-uranusDistance = re.sub('[about rmcl unis]','', uranusDistance)
-if '.' in uranusDistance:
-    uranusDistance = float(uranusDistance)
-else:
-    uranusDistance = int(uranusDistance)
-print(type(uranusDistance))
-
-neptuneDistance = neptune.text
-neptuneDistance = re.sub('[about rmcl unis]','', neptuneDistance)
-if '.' in neptuneDistance:
-    neptuneDistance = float(neptuneDistance)
-else:
-    neptuneDistance = int(neptuneDistance)
-print(type(neptuneDistance))
+getDistance(sunDistance, sun)
+getDistance(mercuryDistance, mercury)
+getDistance(venusDistance, venus)
+getDistance(marsDistance, mars)
+getDistance(jupiterDistance, jupiter)
+getDistance(saturnDistance, saturn)
+getDistance(uranusDistance, uranus)
+getDistance(neptuneDistance, neptune)
 
 # assigns dictionary for each planet then creates a sorted list from that dictionary 
 distanceDict = {
@@ -177,8 +126,6 @@ def play_note_8():
 #sound channels
 pygame.mixer.set_num_channels(10)
 #background music
-#pygame.mixer.Sound("D:\\alebu\\My-Programming-stuff\\mots\\cloud.wav") 
-#pygame.mixer.Channel(0).play(pygame.mixer.Sound("D:\\alebu\\My-Programming-stuff\\mots\\cloud.wav"))
 
 # tkinter window stuff 
 # sets up window and bg image
@@ -226,25 +173,15 @@ Button6.grid(row=0, column=5, sticky=tk.W+tk.E)
 Button7.grid(row=0, column=6, sticky=tk.W+tk.E)
 Button8.grid(row=0, column=7, sticky=tk.W+tk.E)
 
-
 stopPlayingSound.grid(row=0, column=8, sticky=tk.W+tk.E)
 
 
-
 root.mainloop()
-print(todays_date)
-
-root.mainloop()
-
-
 '''
-based on planet's distance from earth 
-basically just play a major 7th chord for now
+major 7th chord
 Note 1: C
 Note 2: E
 Note 3: G
 Note 4: C
 Note 5: E
-
-you know what would be cool is if when each planet's button is pushed, a gif visual fades in. maybe just a corresponding color that flickers
 ''' 
